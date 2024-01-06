@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TasksCreation</title>
+    <link rel="stylesheet" href="/styles.css">
+
+</head>
+
+<body>
+    <h1>Tasks List</h1>
+    <ul>
+        <% AllTasks.forEach(task => { %>
+          <li><%= task.name %></li>
+        <% }); %>
+    </ul>
+
+    <form action="/addtasks" method="post">
+        <label for="TaskName">New Task:</label>
+        <input type="text" id="TaskName" name="TaskName" required/>
+        <button type="submit">ADD TASK</button>
+    </form>
+    
+    
+</body>
+</html>
