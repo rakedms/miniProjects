@@ -1,0 +1,6 @@
+Contract Address : 0x3a0DcbF50c26F4D882b1A1022E30ab416c9d88Dc
+Infura sapholia node :df3074c5878c41ffadad5040d7b08329
+
+metamask owner wallet private Key: d5661198df1326071910533292c4560f61fb138ab777c11238064149dc96df6d
+owner address: 0x00954daD9F16fB218B2E696666C8766CBba47d93
+receiver address: 0x4405aA12f15BEb1C7af85bd68aa1f89CDBBc0CAa

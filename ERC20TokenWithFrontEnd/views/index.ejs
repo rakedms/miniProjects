@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/styles.css">
+
+</head>
+<body>
+    <h1>Web Token</h1>
+    
+    <form action="/totalSupply" method="get">
+        <label >Find Total Supply</label>
+        <output id="TotalSupply"></output>
+        <button type="submit"> Check</button>
+        <output>
+            <%= TotalSupply %>
+        </output>
+    </form>
+    <form action="/balance" method="post">
+        <label>Find Balance</label>
+        <input id="Address" name="Address" placeholder="Address" required>
+        <button type="submit">Send</button>
+        <output>
+            <%= balanceOf %>
+        </output>
+    </form>     
+    <form action="/transfer" method="post">
+        <label>Tranfer Token</label>
+        <input id="fromAddress" name="fromAddress" placeholder="Owner Address">
+        <input id="toAddress" name="toAddress" placeholder="To Address" required>
+        <input id="quantity" name="Qty" placeholder="Quantity" required>
+        <button type="submit">Send</button>
+        <output>
+            <%= transfered %>
+        </output>
+        
+    </form>
+    <form action="/AddAdmin" method="post">
+        <label>Add Admin</label>
+        <input id="OwnerAddress" name="OwnerAddress" placeholder="Owner Address">
+        <input id="AdminAddress" name="AdminAddress" placeholder="Admin Address" required>
+        <input id="quantity" name="Qty" placeholder="Quantity" required>
+        <button type="submit">Send</button>
+        <output>
+            <%= AdminAdded %>
+        </output>
+        
+    </form>
+
+    <form action="/transferFrom" method="post">
+        <label>Transfer From</label>
+        <input id="FromAddress" name="FromAddress" placeholder="FromAddress">
+        <input id="toAddress" name="toAddres" placeholder="To Address" required>
+        <input id="AdminAddress" name="AdminAddress" placeholder="Admin Address" require>
+        <input id="quantity" name="quantity" placeholder="quantity" required>
+        <button type="submit">Send</button>
+        <outpu>
+            <%= transferFromStatus %>
+            <%= transferError %>
+        </outpu>
+    </form>
+
+</body>
+</html>
