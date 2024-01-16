@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        body{
+            background-color: rgb(172, 201, 238);
+            font-size: medium;
+            text-align: center;
+            
+        }
+        button{
+            background-color: rgb(94, 161, 248);
+            font-size: medium; 
+            color: rgb(255, 255, 255); 
+            border-radius: 10px; 
+        }
+        button:hover{
+            background-color: rgba(255, 255, 255, 0.654);
+            color: rgb(94, 161, 248); 
+            border-radius: 15px;
+        }
+    </style>
+
+   
+
+</head>
+
+
+<body>
+    <script src="/path/to/app.js"></script>
+
+    <button onclick="connectTheWallet()">
+        Connect to the Wallet
+    </button>
+    <p id="WalletConnectionStatus"></p>
+
+    <button onclick="viewNFT()">
+        View The NFT
+    </button>
+
+    <button onclick="ConnectContract()" >
+        Connect To Contract
+    </button>
+
+    <Form action="/mintNFT" method="post">
+        <label for="uri">NFT URI</label>
+        <input type="text" id="uri" name="uri" required>
+
+        <label for="toAddress">To Address</label>
+        <input type="text" id="ToAddress" name="ToAddress" required>
+
+        <label for="tokenID">Token ID</label>
+        <input type="text" id="TokenID" name="TokenID" required>
+
+        <button type="submit">
+            MINT NFT
+        </button>
+    </Form>
+    
+    
+    <script >
+
+        document.addEventListener("DOMContentLoaded", function() {
+            
+            const OpenseaNetwork = "https://testnets.opensea.io/";
+            
+            const connectTheWallet = async () => {
+                if (window.ethereum !== undefined) {
+                    try {
+                        const accounts = await ethereum.request({ method: "eth_requestAccounts" });
+                        const account = accounts[0];
+                        document.getElementById("WalletConnectionStatus").innerHTML = "Wallet Connected";
+                    } catch (error) {
+                        console.error('Error connecting wallet:', error);
+                        document.getElementById("WalletConnectionStatus").innerHTML = "Wallet Connection Failed";
+                    }
+                } else {
+                    console.error('MetaMask not detected. Please install MetaMask extension.');
+                    document.getElementById("WalletConnectionStatus").innerHTML = "MetaMask not detected.";
+                }
+            }
+
+
+            const viewNFT = async () => {
+                const address = prompt("Enter NFT Address")
+                await window.open(`${OpenseaNetwork}${address}`);
+            }
+
+
+
+            // Attach the functions to the window object for onclick access
+            window.connectTheWallet = connectTheWallet;
+            window.viewNFT = viewNFT;
+
+
+        });
+    </script>
+
+</body>
+</html>
