@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartStore</title>
+</head>
+<body>
+    <h1>Welcome to SmartStore</h1>
+
+    <script type="module" src="../app.js"></script>
+
+    <form action="/BillTheProduct" method="post">
+        <label for="BillId">Product ID:</label>
+        <input type="number" name="BillId" required>
+
+        <label for="OwnerAddress">Owner Address</label>
+        <input name="OwnerAddress" required>
+        <button type="submit">Add to Data Base</button>
+    </form>
+    
+</body>
+</html>
