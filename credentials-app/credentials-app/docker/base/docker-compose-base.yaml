@@ -1,0 +1,146 @@
+version: '2'
+
+services:
+
+  orderer.credentials.com:
+    environment:
+      - ORDERER_GENERAL_LISTENPORT=7050
+    extends:
+      file: peer-base.yaml
+      service: orderer-base
+    volumes:
+      - ../../channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+      - ../../organizations/ordererOrganizations/credentials.com/orderers/orderer.credentials.com/msp/:/var/hyperledger/orderer/msp
+      - ../../organizations/ordererOrganizations/credentials.com/orderers/orderer.credentials.com/tls/:/var/hyperledger/orderer/tls
+      - orderer.credentials.com:/var/hyperledger/production/orderer
+    ports:
+      - 7050:7050
+      - 8443:8443
+
+  orderer2.credentials.com:
+    environment: 
+      - ORDERER_GENERAL_LISTENPORT=8050
+    extends: 
+      file: peer-base.yaml
+      service: orderer-base
+    volumes: 
+      - ../../channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+      - ../../organizations/ordererOrganizations/credentials.com/orderers/orderer2.credentials.com/msp/:/var/hyperledger/orderer/msp
+      - ../../organizations/ordererOrganizations/credentials.com/orderers/orderer2.credentials.com/tls/:/var/hyperledger/orderer/tls
+      - orderer2.credentials.com:/var/hyperledger/production/orderer
+    ports:
+      - 8050:8050
+      - 8444:8443
+
+  orderer3.credentials.com:
+    environment: 
+      - ORDERER_GENERAL_LISTENPORT=9050
+    extends: 
+      file: peer-base.yaml
+      service: orderer-base
+    volumes: 
+      - ../../channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+      - ../../organizations/ordererOrganizations/credentials.com/orderers/orderer3.credentials.com/msp/:/var/hyperledger/orderer/msp
+      - ../../organizations/ordererOrganizations/credentials.com/orderers/orderer3.credentials.com/tls/:/var/hyperledger/orderer/tls
+      - orderer3.credentials.com:/var/hyperledger/production/orderer
+    ports:
+      - 9050:9050
+      - 8445:8443
+
+  peer0.admin.credentials.com:
+    container_name: peer0.admin.credentials.com
+    extends: 
+      file: peer-base.yaml
+      service: peer-base
+    environment: 
+      - CORE_PEER_ID=peer0.admin.credentials.com
+      - CORE_PEER_ADDRESS=peer0.admin.credentials.com:7051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.admin.credentials.com:7052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.admin.credentials.com:8051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.admin.credentials.com:7051
+      - CORE_PEER_LOCALMSPID=adminMSP
+    volumes: 
+      - ../..:/opt/gopath/src/github.com/hyperledger/fabric-samples
+      - ../../../config/core.yaml:/etc/hyperledger/fabric/core.yaml
+      - /var/run/:/host/var/run/
+      - ../../organizations/peerOrganizations/admin.credentials.com/peers/peer0.admin.credentials.com/msp:/etc/hyperledger/fabric/msp
+      - ../../organizations/peerOrganizations/admin.credentials.com/peers/peer0.admin.credentials.com/tls:/etc/hyperledger/fabric/tls
+      - peer0.admin.credentials.com:/var/hyperledger/production
+    ports: 
+      - 7051:7051
+
+  peer1.admin.credentials.com:
+    container_name: peer1.admin.credentials.com
+    extends: 
+      file: peer-base.yaml
+      service: peer-base
+    environment: 
+      - CORE_PEER_ID=peer1.admin.credentials.com
+      - CORE_PEER_ADDRESS=peer1.admin.credentials.com:8051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:8051
+      - CORE_PEER_CHAINCODEADDRESS=peer1.admin.credentials.com:8052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:8052
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.admin.credentials.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.admin.credentials.com:8051
+      - CORE_PEER_LOCALMSPID=adminMSP
+    volumes: 
+      - ../..:/opt/gopath/src/github.com/hyperledger/fabric-samples
+      - ../../../config/core.yaml:/etc/hyperledger/fabric/core.yaml
+      - /var/run/:/host/var/run/
+      - ../../organizations/peerOrganizations/admin.credentials.com/peers/peer1.admin.credentials.com/msp:/etc/hyperledger/fabric/msp
+      - ../../organizations/peerOrganizations/admin.credentials.com/peers/peer1.admin.credentials.com/tls:/etc/hyperledger/fabric/tls
+      - peer1.admin.credentials.com:/var/hyperledger/production
+    ports: 
+      - 8051:8051
+
+  peer0.user.credentials.com:
+    container_name: peer0.user.credentials.com
+    extends: 
+      file: peer-base.yaml
+      service: peer-base
+    environment: 
+      - CORE_PEER_ID=peer0.user.credentials.com
+      - CORE_PEER_ADDRESS=peer0.user.credentials.com:9051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:9051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.user.credentials.com:9052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:9052
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.user.credentials.com:10051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.user.credentials.com:9051
+      - CORE_PEER_LOCALMSPID=userMSP
+    volumes: 
+      - ../..:/opt/gopath/src/github.com/hyperledger/fabric-samples
+      - ../../../config/core.yaml:/etc/hyperledger/fabric/core.yaml
+      - /var/run/:/host/var/run/
+      - ../../organizations/peerOrganizations/user.credentials.com/peers/peer0.user.credentials.com/msp:/etc/hyperledger/fabric/msp
+      - ../../organizations/peerOrganizations/user.credentials.com/peers/peer0.user.credentials.com/tls:/etc/hyperledger/fabric/tls
+      - peer0.user.credentials.com:/var/hyperledger/production
+    ports: 
+      - 9051:9051
+
+  peer1.user.credentials.com:
+    container_name: peer1.user.credentials.com
+    extends: 
+      file: peer-base.yaml
+      service: peer-base
+    environment: 
+      - CORE_PEER_ID=peer1.user.credentials.com
+      - CORE_PEER_ADDRESS=peer1.user.credentials.com:10051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:10051
+      - CORE_PEER_CHAINCODEADDRESS=peer1.user.credentials.com:10052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:10052
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.user.credentials.com:9051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.user.credentials.com:10051
+      - CORE_PEER_LOCALMSPID=userMSP
+    volumes: 
+      - ../..:/opt/gopath/src/github.com/hyperledger/fabric-samples
+      - ../../../config/core.yaml:/etc/hyperledger/fabric/core.yaml
+      - /var/run/:/host/var/run/
+      - ../../organizations/peerOrganizations/user.credentials.com/peers/peer1.user.credentials.com/msp:/etc/hyperledger/fabric/msp
+      - ../../organizations/peerOrganizations/user.credentials.com/peers/peer1.user.credentials.com/tls:/etc/hyperledger/fabric/tls
+      - peer1.user.credentials.com:/var/hyperledger/production
+    ports: 
+      - 10051:10051
+
+ 

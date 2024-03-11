@@ -1,0 +1,175 @@
+Organizations:
+  - &OrdererOrg
+    Name: OrdererOrg
+    ID: OrdererMSP
+    MSPDir: ../organizations/ordererOrganizations/credentials.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('OrdererMSP.member')"
+      Writers:
+        Type: Signature
+        Rule: "OR('OrdererMSP.member')"
+      Admins:
+        Type: Signature
+        Rule: "OR('OrdererMSP.admin')"
+    OrdererEndpoints:
+      - orderer.credentials.com:7050
+      - orderer2.credentials.com:8050
+      - orderer3.credentials.com:9050
+
+  - &Admin
+      Name: AdminMSP
+      ID: AdminMSP
+      MSPDir: ../organizations/peerOrganizations/admin.credentials.com/msp
+      Policies:
+        Readers:
+          Type: Signature
+          Rule: "OR('AdminMSP.admin', 'AdminMSP.peer', 'AdminMSP.client')"
+        Writers:
+          Type: Signature
+          Rule: "OR('AdminMSP.admin', 'AdminMSP.client')"
+        Admins:
+          Type: Signature
+          Rule: "OR('AdminMSP.admin')"
+        Endorsement:
+          Type: Signature
+          Rule: "OR('AdminMSP.peer')"
+      AnchorPeers:
+        - Host: peer0.admin.credentials.com
+          Port: 7051
+
+  - &User
+      Name: UserMSP
+      ID: UserMSP
+      MSPDir: ../organizations/peerOrganizations/user.credentials.com/msp
+      Policies:
+        Readers:
+          Type: Signature
+          Rule: "OR('UserMSP.admin', 'UserMSP.peer', 'UserMSP.client')"
+        Writers:
+          Type: Signature
+          Rule: "OR('UserMSP.admin', 'UserMSP.client')"
+        Admins:
+          Type: Signature
+          Rule: "OR('UserMSP.admin')"
+        Endorsement:
+          Type: Signature
+          Rule: "OR('UserMSP.peer')"
+      AnchorPeers:
+        - Host: peer0.user.credentials.com
+          Port: 9051
+
+
+
+Capabilities:
+  Channel: &ChannelCapabilities
+    V2_0: true
+  Orderer: &OrdererCapabilities
+    V2_0: true
+  Application: &ApplicationCapabilities
+    V2_0: true
+
+Application: &ApplicationDefaults
+  Organizations:
+
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+    LifecycleEndorsement:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Endorsement"
+    Endorsement:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Endorsement"
+  Capabilities:
+    <<: *ApplicationCapabilities
+
+Orderer: &OrdererDefaults
+  OrdererType: etcdraft
+  Addresses:
+    - orderer.credentials.com:7050
+    - orderer2.credentials.com:8050
+    - orderer3.credentials.com:9050
+  EtcdRaft:
+    Consenters:
+    - Host: orderer.credentials.com
+      Port: 7050
+      ClientTLSCert: ../organizations/ordererOrganizations/credentials.com/orderers/orderer.credentials.com/tls/server.crt
+      ServerTLSCert: ../organizations/ordererOrganizations/credentials.com/orderers/orderer.credentials.com/tls/server.crt
+    - Host: orderer2.credentials.com
+      Port: 8050
+      ClientTLSCert: ../organizations/ordererOrganizations/credentials.com/orderers/orderer2.credentials.com/tls/server.crt
+      ServerTLSCert: ../organizations/ordererOrganizations/credentials.com/orderers/orderer2.credentials.com/tls/server.crt
+    - Host: orderer3.credentials.com
+      Port: 9050
+      ClientTLSCert: ../organizations/ordererOrganizations/credentials.com/orderers/orderer3.credentials.com/tls/server.crt
+      ServerTLSCert: ../organizations/ordererOrganizations/credentials.com/orderers/orderer3.credentials.com/tls/server.crt
+  BatchTimeout: 2s
+  BatchSize:
+    MaxMessageCount: 10
+    AbsoluteMaxBytes: 99 MB 
+    PreferredMaxBytes: 512 KB
+  Organizations:
+
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+    BlockValidation:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+
+Channel: &ChannelDefaults
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+  Capabilities:
+    <<: *ChannelCapabilities
+
+Profiles:
+  credentialsOrdererGenesis:
+    <<: *ChannelDefaults
+    Orderer:
+      <<: *OrdererDefaults
+
+      Organizations:
+        - *OrdererOrg
+      Capabilities:
+        <<: *OrdererCapabilities
+    Consortiums:
+      credentialsConsortium:
+        Organizations:
+          - *Admin
+          - *User
+  
+  credentialsChannel:
+    Consortium: credentialsConsortium
+    <<: *ChannelDefaults
+    Application:
+      <<: *ApplicationDefaults
+      Organizations:
+        - *Admin
+        - *User
+      Capabilities:
+        <<: *ApplicationCapabilities

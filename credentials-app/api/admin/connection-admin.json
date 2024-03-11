@@ -1,0 +1,60 @@
+{
+    "name": "credentials-app",
+    "version": "1.0.0",
+    "client": {
+        "organization": "Admin",
+        "connection": {
+            "timeout": {
+                "peer": {
+                    "endorser": "300"
+                }
+            }
+        }
+    },
+    "organizations": {
+        "Admin": {
+            "mspid": "AdminMSP",
+            "peers": [
+                "peer0.admin.credentials.com",
+                "peer1.admin.credentials.com"
+            ],
+            "certificateAuthorities": [
+                "ca.admin.credentials.com"
+            ]
+        }
+    },
+    "peers": {
+        "peer0.admin.credentials.com":{
+            "url": "grpcs://localhost:7051",
+            "grpcOption": {
+                "ssl-target-name-override": "peer0.admin.credentials.com",
+                "hostnameOverride": "peer0.admin.credentials.com"
+            },
+            "tlsCACerts": {
+                "path": "../../credentials-app/organizations/peerOrganizations/admin.credentials.com/tlsca/tlsca.admin.credentials.com-cert.pem"
+            }
+        },
+        "peer1.admin.credentials.com":{
+            "url": "grpcs://localhost:8051",
+            "grpcOption": {
+                "ssl-target-name-override": "peer1.admin.credentials.com",
+                "hostnameOverride": "peer1.admin.credentials.com"
+            },
+            "tlsCACerts": {
+                "path": "../../credentials-app/organizations/peerOrganizations/admin.credentials.com/tlsca/tlsca.admin.credentials.com-cert.pem"
+            }
+        }
+    },
+    "certificateAuthorities": {
+        "ca.admin.credentials.com": {
+            "url": "https://localhost:7054",
+            "caName": "ca.admin.credentials.com",
+            "httpOptions": {
+                "verify": false
+            },
+            "tlsCACerts": {
+                "path": "../../credentials-app/organizations/peerOrganizations/admin.credentials.com/ca/ca.admin.credentials.com-cert.pem"
+            }
+        }
+    }
+}

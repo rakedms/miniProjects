@@ -1,0 +1,25 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "APIs for accessing fabric network",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "nodemon": "node serverOrg1.js"
+  },
+  "keywords": [
+    "hyperledger-fabric"
+  ],
+  "author": "Saicharan Pogul",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "fabric-ca-client": "^2.2.18",
+    "fabric-client": "^1.4.20",
+    "fabric-common": "^2.2.18",
+    "fabric-network": "^2.2.18"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  }
+}

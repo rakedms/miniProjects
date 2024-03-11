@@ -1,0 +1,60 @@
+{
+    "name": "credentials-app",
+    "version": "1.0.0",
+    "client": {
+        "organization": "User",
+        "connection": {
+            "timeout": {
+                "peer": {
+                    "endorser": "300"
+                }
+            }
+        }
+    },
+    "organizations": {
+        "User": {
+            "mspid": "UserMSP",
+            "peers": [
+                "peer0.user.credentials.com",
+                "peer1.user.credentials.com"
+            ],
+            "certificateAuthorities": [
+                "ca.user.credentials.com"
+            ]
+        }
+    },
+    "peers": {
+        "peer0.user.credentials.com":{
+            "url": "grpcs://localhost:9051",
+            "grpcOption": {
+                "ssl-target-name-override": "peer0.user.credentials.com",
+                "hostnameOverride": "peer0.user.credentials.com"
+            },
+            "tlsCACerts": {
+                "path": "../../credentials-app/organizations/peerOrganizations/user.credentials.com/tlsca/tlsca.user.credentials.com-cert.pem"
+            }
+        },
+        "peer1.user.credentials.com":{
+            "url": "grpcs://localhost:10051",
+            "grpcOption": {
+                "ssl-target-name-override": "peer1.user.credentials.com",
+                "hostnameOverride": "peer1.user.credentials.com"
+            },
+            "tlsCACerts": {
+                "path": "../../credentials-app/organizations/peerOrganizations/user.credentials.com/tlsca/tlsca.user.credentials.com-cert.pem"
+            }
+        }
+    },
+    "certificateAuthorities": {
+        "ca.user.credentials.com": {
+            "url": "https://localhost:8054",
+            "caName": "ca.user.credentials.com",
+            "httpOptions": {
+                "verify": false
+            },
+            "tlsCACerts": {
+                "path": "../../credentials-app/organizations/peerOrganizations/user.credentials.com/ca/ca.user.credentials.com-cert.pem"
+            }
+        }
+    }
+}
